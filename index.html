@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="description" content="Classic Minesweeper game with power-ups">
+  <title>Minesweeper</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="game-container">
+    <div class="window">
+      <div class="title-bar">
+        <span class="title">Minesweeper</span>
+        <div class="title-buttons">
+          <button class="title-btn" id="settingsBtn" aria-label="Settings">
+            <span class="settings-icon"></span>
+          </button>
+        </div>
+      </div>
+      
+      <div class="menu-bar">
+        <button class="menu-item" id="gameMenu">Game</button>
+        <button class="menu-item" id="helpMenu">Help</button>
+      </div>
+      
+      <div class="game-panel">
+        <div class="status-bar">
+          <div class="counter mine-counter">
+            <span class="digit" data-digit="0">0</span>
+            <span class="digit" data-digit="1">0</span>
+            <span class="digit" data-digit="2">0</span>
+          </div>
+          
+          <button class="face-btn" id="faceBtn" aria-label="New Game">
+            <span class="face face-smile"></span>
+          </button>
+          
+          <div class="counter timer">
+            <span class="digit" data-digit="0">0</span>
+            <span class="digit" data-digit="1">0</span>
+            <span class="digit" data-digit="2">0</span>
+          </div>
+        </div>
+        
+        <div class="board-container">
+          <div class="board" id="board"></div>
+        </div>
+        
+        <div class="powerup-bar" id="powerupBar">
+          <div class="powerup-inventory"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Game Menu Dropdown -->
+    <div class="dropdown-menu" id="gameDropdown">
+      <button class="dropdown-item" data-action="new">New Game</button>
+      <div class="dropdown-divider"></div>
+      <button class="dropdown-item" data-action="beginner">Beginner</button>
+      <button class="dropdown-item" data-action="intermediate">Intermediate</button>
+      <button class="dropdown-item" data-action="expert">Expert</button>
+      <div class="dropdown-divider"></div>
+      <button class="dropdown-item" data-action="togglePowerups">
+        <span class="checkmark" id="powerupCheck">&#10003;</span> Power-ups
+      </button>
+      <button class="dropdown-item" data-action="toggleSound">
+        <span class="checkmark" id="soundCheck">&#10003;</span> Sound
+      </button>
+      <div class="dropdown-divider"></div>
+      <button class="dropdown-item" data-action="highscores">High Scores</button>
+    </div>
+    
+    <!-- Help Menu Dropdown -->
+    <div class="dropdown-menu" id="helpDropdown">
+      <button class="dropdown-item" data-action="howToPlay">How to Play</button>
+      <button class="dropdown-item" data-action="about">About</button>
+    </div>
+    
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span>Settings</span>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="setting-group">
+            <label>Volume</label>
+            <input type="range" id="volumeSlider" min="0" max="100" value="50">
+          </div>
+          <div class="setting-group">
+            <label>
+              <input type="checkbox" id="powerupsToggle" checked>
+              Enable Power-ups
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" id="settingsSave">OK</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- High Scores Modal -->
+    <div class="modal" id="highscoresModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span>High Scores</span>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="highscore-tabs">
+            <button class="tab active" data-difficulty="beginner">Beginner</button>
+            <button class="tab" data-difficulty="intermediate">Intermediate</button>
+            <button class="tab" data-difficulty="expert">Expert</button>
+          </div>
+          <div class="highscore-list" id="highscoreList"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" id="clearScores">Clear</button>
+          <button class="btn" id="closeScores">OK</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- How to Play Modal -->
+    <div class="modal" id="helpModal">
+      <div class="modal-content modal-large">
+        <div class="modal-header">
+          <span>How to Play</span>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <h3>Objective</h3>
+          <p>Clear the minefield without detonating any mines.</p>
+          
+          <h3>Controls</h3>
+          <p><strong>Desktop:</strong></p>
+          <ul>
+            <li>Left-click: Reveal a cell</li>
+            <li>Right-click: Place/remove a flag</li>
+            <li>Both buttons: Chord (reveal adjacent cells if flags match)</li>
+          </ul>
+          <p><strong>Mobile:</strong></p>
+          <ul>
+            <li>Tap: Reveal a cell</li>
+            <li>Long press: Place/remove a flag</li>
+          </ul>
+          
+          <h3>Numbers</h3>
+          <p>Numbers indicate how many mines are adjacent to that cell.</p>
+          
+          <h3>Power-ups</h3>
+          <p>Special cells grant abilities when revealed:</p>
+          <ul>
+            <li><strong>Shield:</strong> Survive one mine hit</li>
+            <li><strong>Detector:</strong> Briefly reveals a mine location</li>
+            <li><strong>Time Freeze:</strong> Pauses the timer</li>
+            <li><strong>Safe Reveal:</strong> Reveals safe cells automatically</li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button class="btn">OK</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Win/Lose Modal -->
+    <div class="modal" id="gameOverModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span id="gameOverTitle">Game Over</span>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p id="gameOverMessage"></p>
+          <div class="name-input" id="nameInputSection" style="display: none;">
+            <label>Enter your name:</label>
+            <input type="text" id="playerName" maxlength="20" placeholder="Player">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" id="playAgainBtn">Play Again</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="js/sound.js"></script>
+  <script src="js/board.js"></script>
+  <script src="js/powerups.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,62 @@
+{
+  "difficulties": {
+    "beginner": {
+      "rows": 9,
+      "cols": 9,
+      "mines": 10
+    },
+    "intermediate": {
+      "rows": 16,
+      "cols": 16,
+      "mines": 40
+    },
+    "expert": {
+      "rows": 16,
+      "cols": 30,
+      "mines": 99
+    }
+  },
+  "powerups": {
+    "enabled": true,
+    "spawnChance": 0.05,
+    "types": {
+      "shield": {
+        "name": "Shield",
+        "description": "Survive the next mine hit (one use)",
+        "icon": "shield"
+      },
+      "detector": {
+        "name": "Detector",
+        "description": "Reveals one random unflagged mine for 3 seconds",
+        "icon": "radar",
+        "duration": 3000
+      },
+      "freeze": {
+        "name": "Time Freeze",
+        "description": "Pauses timer for 15 seconds",
+        "icon": "snowflake",
+        "duration": 15000
+      },
+      "safeReveal": {
+        "name": "Safe Reveal",
+        "description": "Auto-reveals 3 random safe cells",
+        "icon": "star",
+        "cellCount": 3
+      }
+    }
+  },
+  "timing": {
+    "longPressMs": 500,
+    "maxTimer": 999,
+    "cascadeDelayMs": 15
+  },
+  "ui": {
+    "minCellSize": 24,
+    "mobileCellSize": 44
+  },
+  "sound": {
+    "enabled": true,
+    "volume": 0.5
+  }
+}
+
